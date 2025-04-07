@@ -1,32 +1,29 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Person from './Person';
 
-describe('Person Component', () => {
-  it('debe mostrar la información de la persona', () => {
-    const personMock = {
-      name: {
-        title: 'Mr.',
-        first: 'Carlos'
-      },
-      picture: {
-        medium: 'https://randomuser.me/api/portraits/med/men/75.jpg'
-      },
-      location: {
-        city: 'Bogotá',
-        state: 'Cundinamarca'
-      }
-    };
+describe('Person component', () => {
+  const mockPerson = {
+    name: { first: 'Juan', last: 'Pérez' },
+    location: { country: 'Colombia' },
+    picture: { medium: 'https://randomuser.me/api/portraits/med/men/75.jpg' },
+  };
 
-    render(<Person person={personMock} />);
+  it('renderiza nombre, país, imagen y botón correctamente', () => {
+    render(<Person person={mockPerson} onClick={() => {}} />);
 
-    const image = screen.getByAltText(/Carlos/i);
-    const name = screen.getByText(/Mr. Carlos/i);
-    const locationCity = screen.getByText(/Bogotá/i);
-    const locationState = screen.getByText(/Cundinamarca/i);
+    expect(screen.getByText('Juan Pérez')).toBeInTheDocument();
+    expect(screen.getByText('Colombia')).toBeInTheDocument();
+    expect(screen.getByAltText('Juan')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /ver ficha personal/i })).toBeInTheDocument();
+  });
 
-    expect(image).toBeInTheDocument();
-    expect(name).toBeInTheDocument();
-    expect(locationCity).toBeInTheDocument();
-    expect(locationState).toBeInTheDocument();
+  it('ejecuta la función onClick al hacer clic en el botón', () => {
+    const handleClick = jest.fn();
+    render(<Person person={mockPerson} onClick={handleClick} />);
+
+    const button = screen.getByRole('button', { name: /ver ficha personal/i });
+    fireEvent.click(button);
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });

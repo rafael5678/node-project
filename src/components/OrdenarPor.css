@@ -1,0 +1,14 @@
+.ordenar-por {
+    margin: 1rem auto;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .ordenar-por .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
